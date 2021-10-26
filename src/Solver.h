@@ -14,12 +14,11 @@ private:
 
     const int n;
     int **D;
-//    int D[][];
 
 public:
     Solver(int n, int **D);
 
-    std::vector<int> burning_sequence(int k, std::vector<int> V);
+    std::vector<int> burning_sequence(int k, std::vector<int> &V);
 
     int solve(int p);
 };
