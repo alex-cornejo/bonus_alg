@@ -1,5 +1,4 @@
-# bonus_alg
-Approximation algorithms for the Graph Burning Problem
+# Approximation algorithms for the Graph Burning Problem
 
 The first time it is need to install the conan package manager with the respective libraries included in the conanfile.txt
 
