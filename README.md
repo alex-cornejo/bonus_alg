@@ -25,12 +25,12 @@ sudo apt install cmake
 cmake -DCMAKE_BUILD_TYPE=Release .
 cmake --build .
 ```
-The binary file will be generated onto the ```bin/``` folder.
+The binary file will be generated onto the root folder with the name ```bonus_alg```.
 
 ## Run
 
 ```
-./bin/bonus_alg [file] [algorithm] [p]
+./bonus_alg [file] [algorithm] [p]
 ```
 
 ### Where,
