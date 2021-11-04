@@ -41,4 +41,4 @@ for e in dataset:
     path = root+e+".mtx"
     # path = "'"+path+"'"
     # print(e)
-    os.system("bin/Bonus "+path)
+    os.system("./bonus_alg "+path+" bonus 1")
