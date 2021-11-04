@@ -52,7 +52,7 @@ The binary file will be generated onto the "bin/" folder. Get onto it with ```cd
 |  Parameter |                                          Description                                          |
 |----------|---------------------------------------------------------------------------------------------|
 | `[file]` | (string) Instance file path with a valid format, defined here                                    |
-| `[algorithm]`    | (string) Algorithm to execute (bon, bff and bonus)  |
+| `[algorithm]`    | (string) Algorithm to run (bon, bff and bonus)  |
 | `[p]`    | (integer) p value (only if bonus algorithm is selected)   |
 
 # Example 1

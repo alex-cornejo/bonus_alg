@@ -7,135 +7,17 @@
 #include <cmath>
 #include <climits>
 #include <numeric>
-#include "Solver.h"
+#include "BonusSolver.h"
 
-#include "combinations/combinations.hpp"
-#include "combinations/combinations_init.hpp"
+#include "../combinations/combinations.hpp"
+#include "../combinations/combinations_init.hpp"
 
 using namespace boost;
 using namespace boost::combinations;
 using namespace std;
 
-Solver::Solver(const int n, int **D) : n(n), D(D) {}
-
-//vector<int> Solver::burning_sequence(int ** D, int k) {
-//    set<int> C;
-//    vector<int> f;
-//    set<int> f_aux;
-//    while (C.size() != n) {
-//        int f_i = rand() % n;
-//        while (C.find(f_i) != C.end()) {
-//            f_i = rand() % n;
-//        }
-//        f.push_back(f_i);
-//        f_aux.insert(f_i);
-//        for (int v = 0; v < n; v++) {
-//            if (D[f_i][v] <= 2 * (k - 1)) {
-//                C.insert(v);
-//            }
-//        }
-//    }
-//    C.clear();
-//    int S = f.size();
-//    int i = 1;
-//    for (auto f_i : f) {
-//        for (int v = 0; v < n; v++) {
-//            if (D[f_i][v] <= S - i) {
-//                C.insert(v);
-//            }
-//        }
-//        i++;
-//    }
-////    i = S + 1;
-//    // second part
-//    while (C.size() != n) {
-//        int f_i = rand() % n;
-//        while (f_aux.find(f_i) != f_aux.end()) {
-//            f_i = rand() % n;
-//        }
-//        f.push_back(f_i);
-//        f_aux.insert(f_i);
-//        S = f.size();
-//        i = 1;
-//        for (auto u : f) {
-//            for (int v = 0; v < n; v++) {
-//                if (D[u][v] <= S - i) {
-//                    C.insert(v);
-//                }
-//            }
-//            i++;
-//        }
-//    }
-//    return f;
-//}
-
-std::vector<int> Solver::burning_sequence(int k, vector<int> &V) {
-    int n = V.size();
-    std::vector<int> f;
-    std::vector<bool> f_aux(n);
-    std::vector<bool> C(n);
-
-    // 1. Construct a sequence f
-    int covered_count = 0;
-    while (covered_count < n) {
-        int f_i = rand() % n;
-        while (C[f_i]) {
-            f_i = rand() % n;
-        }
-        f.push_back(V[f_i]);
-        f_aux[f_i] = true;
-        int iv = 0;
-        for (int v: V) {
-            if (D[V[f_i]][v] <= 2 * (k - 1)) {
-                if (!C[iv]) {
-                    C[iv] = true;
-                    if (++covered_count == n) break;
-                }
-            }
-            iv++;
-        }
-    }
-
-    // 2. Add extra vertices to f until all vertices in V are covered
-    std::fill(C.begin(), C.end(), false);
-    covered_count = 0;
-    int S = f.size();
-    int i = 1;
-    for (auto u: f) {
-        int iv = 0;
-        for (int v: V) {
-            if (D[u][v] <= S - i && !C[iv]) {
-                C[iv] = true;
-                covered_count++;
-            }
-            iv++;
-        }
-        i++;
-    }
-    // i = S + 1;
-    // second part
-    while (covered_count < n) {
-        int f_i = rand() % n;
-        while (C[f_i]) {
-            f_i = rand() % n;
-        }
-        f.push_back(V[f_i]);
-        f_aux[f_i] = true;
-        S = f.size();
-        i = 1;
-        for (auto u: f) {
-            int iv = 0;
-            for (int v: V) {
-                if (D[u][v] <= S - i && !C[iv]) {
-                    C[iv] = true;
-                    covered_count++;
-                }
-                iv++;
-            }
-            i++;
-        }
-    }
-    return f;
+BonusSolver::BonusSolver(const int n, int **D, int p) : BonSolver(n, D) {
+    BonusSolver::p = p;
 }
 
 template<typename Iter>
@@ -148,7 +30,7 @@ vector<int> get_permutation(Iter first, Iter middle, Iter last, int k) {
     return perm;
 }
 
-int Solver::solve(int p) {
+vector<int> BonusSolver::run() {
     int high = ceil(sqrt(n));
     vector<int> f_best(n + 1);
     for (int k = 1; k <= high; k++) {
@@ -187,7 +69,7 @@ int Solver::solve(int p) {
                     uncovered.push_back(i);
                 }
             }
-            auto f = burning_sequence(k, uncovered);
+            vector<int> f = burning_sequence(k, uncovered);
 
             // concatenate sequence
             vector<int> g_seq = {g};
@@ -238,7 +120,7 @@ int Solver::solve(int p) {
             f_best = g_best;
         }
     }
-    return f_best.size();
+    return f_best;
 }
 
 

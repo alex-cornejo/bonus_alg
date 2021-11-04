@@ -5,42 +5,19 @@
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/johnson_all_pairs_shortest.hpp>
 #include <numeric>
-#include "Solver.h"
+#include "algorithm/BonusSolver.h"
 
 #include "utils/FileUtil.h"
 
-#include "combinations/combinations.hpp"
 #include "combinations/combinations_init.hpp"
+#include "algorithm/BFFSolver.h"
 
 using namespace boost;
 using namespace std;
 using namespace boost::combinations;
 
-template<typename Iter>
-vector<int> get_permutation(Iter first, Iter middle, Iter last, int k) {
-    vector<int> perm(k);
-    int i = 0;
-    for (Iter itr = first; itr != middle; ++itr) {
-        perm[i++] = *itr;
-    }
-    return perm;
-}
 
-int main(int argc, char **argv) {
-
-    string input_file = argv[1];
-    string alg = argv[2];
-    int p = 1;
-    if(alg == "bonus"){
-        p = stoi(argv[3]);
-    }
-
-    // start time
-    clock_t begin = clock();
-
-    vector<pair<int, int>> edges_vec;
-    int n;
-    tie(edges_vec, n) = FileUtil::load_graph(input_file);
+int **computeAllShortestPaths(vector<pair<int, int>> &edges_vec, int n) {
     const int m = edges_vec.size();
 
     typedef adjacency_list<vecS, vecS, undirectedS, no_property,
@@ -68,11 +45,68 @@ int main(int argc, char **argv) {
         D[i] = new int[n];
     }
     johnson_all_pairs_shortest_paths(G, D);
+    return D;
+}
 
-    Solver solver(n, D);
-    int card = solver.solve(p);
+int main(int argc, char **argv) {
+
+    string input_file = argv[1];
+    string alg = argv[2];
+
+    // read instance
+    vector<pair<int, int>> edges_vec;
+    int n;
+    tie(edges_vec, n) = FileUtil::load_graph(input_file);
+
+    // time of compute all shortest paths
+    clock_t begin = clock();
+    int **D = computeAllShortestPaths(edges_vec, n);
     clock_t end = clock();
-    double time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
-    cout << card << "," << time_spent << endl;
+    double time_casp = (double) (end - begin) / CLOCKS_PER_SEC;
+    // end computations of all shortest paths
+
+    // time of algorithm
+    vector<int> f;
+    begin = clock();
+
+    if (alg == "bon") {
+        BonSolver solver(n, D);
+        f = solver.run();
+    }
+    else if (alg == "bff") {
+        BFFSolver solver(n, D , edges_vec);
+        f = solver.run();
+    }
+    else if (alg == "bff+") {
+        BFFSolver solver(n, D , edges_vec);
+        solver.setPlus(true);
+        f = solver.run();
+    }
+    else if (alg == "bonus") {
+        int p = stoi(argv[3]);
+        BonusSolver solver(n, D, p);
+        f = solver.run();
+    }
+    else{
+        cerr<<"Invalid algorithm!"<<endl;
+    }
+    end = clock();
+    double time_alg = (double) (end - begin) / CLOCKS_PER_SEC;
+
+    // print computations times and solution
+    cout << "Compute all shortest paths running time: " << time_casp << " seconds" << endl;
+    cout << "Algorithm running time: " << time_alg << " seconds" << endl;
+
+    cout << "[";
+    for (int i = 0; i < f.size() - 1; ++i) {
+        cout << f[i] << ", ";
+    }
+    cout << f.back() << "]" << endl;
+    cout << f.size() << endl;
+
+    // clear memory
+    for (int i = 0; i < n; ++i) {
+        delete[] D[i];
+    }
     return 0;
 }
