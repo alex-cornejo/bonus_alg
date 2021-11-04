@@ -101,7 +101,7 @@ Algorithm running time: 0 seconds
 ## Output 5
 ```
 Compute all shortest paths running time: 0.140625 seconds
-Algorithm running time: 7.0625 seconds
+Algorithm running time: 2.48438 seconds
 [819, 606, 607, 552, 608]
 5
 ```

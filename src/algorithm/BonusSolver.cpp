@@ -55,7 +55,6 @@ vector<int> BonusSolver::run() {
             std::vector<int> Vp;
             std::vector<int> covered(n);
             for (int i = 0; i < p_tmp; ++i) {
-
                 for (int v = 0; v < n; ++v) {
                     if (D[g[i]][v] <= k - (i + 1)) {
                         Vp.push_back(v);
@@ -89,11 +88,14 @@ vector<int> BonusSolver::run() {
                 for (int v = 0; v < n; v++) {
                     if (D[u][v] <= S - i && !C[v]) {
                         C[v] = true;
-                        covered_count++;
+                        if(++covered_count==n){
+                            goto allCoveredBy_g;
+                        }
                     }
                 }
                 i++;
             }
+
             // Add vertices to complete the burning sequence
             while (covered_count < n) {
                 int f_i = rand() % n;
@@ -107,12 +109,15 @@ vector<int> BonusSolver::run() {
                     for (int v = 0; v < n; v++) {
                         if (D[u][v] <= S - i && !C[v]) {
                             C[v] = true;
-                            covered_count++;
+                            if (++covered_count == n) {
+                                goto allCoveredBy_g;
+                            }
                         }
                     }
                     i++;
                 }
             }
+            allCoveredBy_g:
             // Save the best local sequence
             if (g_seq.size() < g_best.size()) {
                 g_best = g_seq;

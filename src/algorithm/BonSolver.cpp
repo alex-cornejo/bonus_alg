@@ -45,7 +45,7 @@ std::vector<int> BonSolver::burning_sequence(int k, vector<int> &V) {
         for (int v: V) {
             if (D[u][v] <= S - i && !C[iv]) {
                 C[iv] = true;
-                covered_count++;
+                if(++covered_count==n) goto allCoveredByF;
             }
             iv++;
         }
@@ -67,13 +67,16 @@ std::vector<int> BonSolver::burning_sequence(int k, vector<int> &V) {
             for (int v: V) {
                 if (D[u][v] <= S - i && !C[iv]) {
                     C[iv] = true;
-                    covered_count++;
+                    if (++covered_count == n) {
+                        goto allCoveredByF;
+                    }
                 }
                 iv++;
             }
             i++;
         }
     }
+    allCoveredByF:
     return f;
 }
 
