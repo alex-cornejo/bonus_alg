@@ -4,17 +4,13 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/johnson_all_pairs_shortest.hpp>
-#include <numeric>
+
 #include "algorithm/BonusSolver.h"
-
 #include "utils/FileUtil.h"
-
-#include "combinations/combinations_init.hpp"
 #include "algorithm/BFFSolver.h"
 
 using namespace boost;
 using namespace std;
-using namespace boost::combinations;
 
 
 int **computeAllShortestPaths(vector<pair<int, int>> &edges_vec, int n) {
@@ -64,6 +60,7 @@ int main(int argc, char **argv) {
     clock_t end = clock();
     double time_casp = (double) (end - begin) / CLOCKS_PER_SEC;
     // end computations of all shortest paths
+    cout << "Compute all shortest paths running time: " << time_casp << " seconds" << endl;
 
     // time of algorithm
     vector<int> f;
@@ -72,29 +69,24 @@ int main(int argc, char **argv) {
     if (alg == "bon") {
         BonSolver solver(n, D);
         f = solver.run();
-    }
-    else if (alg == "bff") {
-        BFFSolver solver(n, D , edges_vec);
+    } else if (alg == "bff") {
+        BFFSolver solver(n, D, edges_vec);
         f = solver.run();
-    }
-    else if (alg == "bff+") {
-        BFFSolver solver(n, D , edges_vec);
+    } else if (alg == "bff+") {
+        BFFSolver solver(n, D, edges_vec);
         solver.setPlus(true);
         f = solver.run();
-    }
-    else if (alg == "bonus") {
+    } else if (alg == "bonus") {
         int p = stoi(argv[3]);
-        BonusSolver solver(n, D, p);
+        BonusSolver solver(n, D, p, edges_vec);
         f = solver.run();
-    }
-    else{
-        cerr<<"Invalid algorithm!"<<endl;
+    } else {
+        cerr << "Invalid algorithm!" << endl;
     }
     end = clock();
     double time_alg = (double) (end - begin) / CLOCKS_PER_SEC;
 
     // print computations times and solution
-    cout << "Compute all shortest paths running time: " << time_casp << " seconds" << endl;
     cout << "Algorithm running time: " << time_alg << " seconds" << endl;
 
     cout << "[";

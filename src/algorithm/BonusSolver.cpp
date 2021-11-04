@@ -5,8 +5,8 @@
 #include <set>
 #include <cstdlib>
 #include <cmath>
-#include <climits>
 #include <numeric>
+#include <queue>
 #include "BonusSolver.h"
 
 #include "../combinations/combinations.hpp"
@@ -16,8 +16,10 @@ using namespace boost;
 using namespace boost::combinations;
 using namespace std;
 
-BonusSolver::BonusSolver(const int n, int **D, int p) : BonSolver(n, D) {
+BonusSolver::BonusSolver(const int n, int **D, int p, vector<pair<int, int>> &edges) : BonSolver(n, D) {
     BonusSolver::p = p;
+    adj = AlgUtils::createAdjList(edges, n);
+    isGraphConnected = isConnectedBFS();
 }
 
 template<typename Iter>
@@ -31,8 +33,8 @@ vector<int> get_permutation(Iter first, Iter middle, Iter last, int k) {
 }
 
 vector<int> BonusSolver::run() {
-    int high = ceil(sqrt(n));
-    vector<int> f_best(n + 1);
+    int high = isGraphConnected ? ceil(sqrt(n)) : n;
+    vector<int> f_best;
     for (int k = 1; k <= high; k++) {
         int p_tmp = p;
         vector<int> g_best(n + 1);
@@ -41,7 +43,7 @@ vector<int> BonusSolver::run() {
             p_tmp = k;
         }
 
-        // explore all p_tmp-tuples
+        // explore all p-tuples
         int numbers[n];
         std::iota(numbers, numbers + n, 0);
         init_permutation(numbers, numbers + p_tmp, numbers + n, true);
@@ -64,6 +66,7 @@ vector<int> BonusSolver::run() {
 
             // Compute the subgraph induced by the vertices not covered by g
             vector<int> uncovered;
+            uncovered.reserve(n);
             for (int i = 0; i < n; ++i) {
                 if (!covered[i]) {
                     uncovered.push_back(i);
@@ -116,12 +119,30 @@ vector<int> BonusSolver::run() {
             }
         } while (next_permutation(numbers, numbers + p_tmp, numbers + n));
         // Save the best global sequence
-        if (g_best.size() < f_best.size()) {
+        if (g_best.size() < f_best.size() || k == 1) {
             f_best = g_best;
         }
     }
     return f_best;
 }
 
-
-
+bool BonusSolver::isConnectedBFS() {
+    queue<int> q;
+    bool visited[n];
+    int visitedCount = 0;
+    q.push(0);
+    visitedCount++;
+    visited[0] = true;
+    while (!q.empty()) {
+        int s = q.front();
+        q.pop();
+        for (auto u: adj[s]) {
+            if (!visited[u]) {
+                visitedCount++;
+                visited[u] = true;
+                q.push(u);
+            }
+        }
+    }
+    return visitedCount == n;
+}

@@ -12,7 +12,7 @@ BFFSolver::BFFSolver(const int n, int **D, vector<pair<int, int>> &edges) : n(n)
     plus = false;
     D2S.resize(n);
     burned.resize(n);
-    initAdjList(edges);
+    adj = AlgUtils::createAdjList(edges, n);
 }
 
 void BFFSolver::init() {
@@ -42,17 +42,6 @@ void BFFSolver::setPlus(bool plus) {
     BFFSolver::plus = plus;
 }
 
-void BFFSolver::initAdjList(vector<pair<int, int>> &edges) {
-    adj.resize(n);
-    for (auto e: edges) {
-        int i = e.first;
-        int j = e.second;
-        adj[i].push_back(j);
-        adj[j].push_back(i);
-    }
-}
-
-
 vector<int> BFFSolver::run() {
 
     int rep = plus ? n : 1;
@@ -76,9 +65,6 @@ vector<int> BFFSolver::run() {
         while (B.size() != n) {
             // Select the farthest vertex from the already selected vertices
             v = getFarthest();
-            if(v==-1){
-                int a =1;
-            }
 
             // update distances from S
             updateDistances(v);
@@ -91,7 +77,7 @@ vector<int> BFFSolver::run() {
             for (int i = iB; i < tmpBsize; ++i) {
                 int u = B[i];
                 for (auto w: adj[u]) {
-                    if (!burned[w] && w!=v) {
+                    if (!burned[w] && w != v) {
                         burned[w] = true;
                         B.push_back(w);
                     }

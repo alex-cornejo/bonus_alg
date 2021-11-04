@@ -41,11 +41,70 @@ The binary file will be generated onto the root folder with the name ```bonus_al
 | `[algorithm]`    | (string) Algorithm to execute (**bon**, **bff**, **bff+** and **bonus**)  |
 | `[p]`    | (integer) ***p*** value (only if bonus algorithm is selected)   |
 
-## Example 1
+## Example 1 - Bon algorithm
 ```
-./bin/bonus_alg dataset/line49nodes.mtx bonus 1
+./bonus_alg dataset/econ-mahindas.mtx bon
 ```
 
+## Output 1
+```
+Compute all shortest paths running time: 0.140625 seconds
+Algorithm running time: 0 seconds
+[367, 1256, 893, 527, 1176, 1141, 555]
+7
+```
+
+## Example 2 - BFF algorithm
+```
+./bonus_alg dataset/econ-mahindas.mtx bff
+```
+
+## Output 2
+```
+Compute all shortest paths running time: 0.125 seconds
+Algorithm running time: 0 seconds
+[367, 505, 555, 50, 503, 549]
+6
+```
+
+## Example 3 - BFF+ algorithm
+```
+./bonus_alg dataset/econ-mahindas.mtx bff+
+```
+
+## Output 3
+```
+Compute all shortest paths running time: 0.140625 seconds
+Algorithm running time: 0.046875 seconds
+[989, 554, 555, 50, 51]
+5
+```
+
+## Example 4 - Bonus algorithm with ***p=0***
+```
+./bonus_alg dataset/econ-mahindas.mtx bonus 0
+```
+
+## Output 4
+```
+Compute all shortest paths running time: 0.140625 seconds
+Algorithm running time: 0.078125 seconds
+[1016, 1253, 522, 919, 594]
+5
+```
+
+## Example 5 - Bonus algorithm with ***p=1***
+```
+./bonus_alg dataset/econ-mahindas.mtx bonus 1
+```
+
+## Output 5
+```
+Compute all shortest paths running time: 0.140625 seconds
+Algorithm running time: 60.8594 seconds
+[819, 606, 607, 552, 608]
+5
+```
 
 # Contact
 * jesgadiaz@inaoep.mx

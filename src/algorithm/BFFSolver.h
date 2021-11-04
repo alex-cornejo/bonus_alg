@@ -7,6 +7,7 @@
 
 
 #include <vector>
+#include "AlgUtils.h"
 
 class BFFSolver {
 
@@ -25,13 +26,13 @@ private:
     void updateDistances(int v);
 
 public:
+
     BFFSolver(int n, int **D, std::vector<std::pair<int, int>>& edges);
 
     std::vector<int> run();
 
     void setPlus(bool plus);
 
-    void initAdjList(std::vector<std::pair<int, int>>& edges);
 };
 
 
