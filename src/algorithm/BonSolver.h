@@ -10,6 +10,7 @@
 
 class BonSolver {
 protected:
+    int seed = 0;
     const int n;
     int **D;
 

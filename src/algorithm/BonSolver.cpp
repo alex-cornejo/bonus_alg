@@ -89,11 +89,13 @@ std::vector<int> BonSolver::run() {
     vector<int> f;
     while (low <= high) {
         int k = (low + high) / 2;
-        f = burning_sequence(k, V);
-        if (f.size() > 3 * k - 2) {
+        srand(seed);
+        vector<int> f_tmp = burning_sequence(k, V);
+        if (f_tmp.size() > 3 * k - 2) {
             low = k + 1;
         } else {
             high = k - 1;
+            f = f_tmp;
         }
     }
     return f;
