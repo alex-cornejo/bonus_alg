@@ -88,9 +88,9 @@ Algorithm running time: 0.046875 seconds
 ## Output 4
 ```
 Compute all shortest paths running time: 0.140625 seconds
-Algorithm running time: 0.078125 seconds
-[1016, 1253, 522, 919, 594]
-5
+Algorithm running time: 0 seconds
+[357, 1049, 582, 415, 1191, 942]
+6
 ```
 
 ## Example 5 - Bonus algorithm with ***p=1***
@@ -101,7 +101,7 @@ Algorithm running time: 0.078125 seconds
 ## Output 5
 ```
 Compute all shortest paths running time: 0.140625 seconds
-Algorithm running time: 60.8594 seconds
+Algorithm running time: 7.0625 seconds
 [819, 606, 607, 552, 608]
 5
 ```

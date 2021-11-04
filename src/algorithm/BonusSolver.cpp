@@ -128,7 +128,7 @@ vector<int> BonusSolver::run() {
 
 bool BonusSolver::isConnectedBFS() {
     queue<int> q;
-    bool visited[n];
+    vector<bool> visited(n);
     int visitedCount = 0;
     q.push(0);
     visitedCount++;
