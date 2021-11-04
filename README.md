@@ -1,61 +1,53 @@
-# bonus_alg
-Approximation algorithms for the Graph Burning Problem
+# Approximation algorithms for the Graph Burning Problem
 
-The first time it is need to install the conan package manager with the respective libraries included in the conanfile.txt
+This repository contains the following approximation algorithms for the Graph Burning Problem.
 
-# Install conan and libraries
+|  Algorithm |                                          Complexity                               | <img src="https://render.githubusercontent.com/render/math?math=\rho">| keywork
+|------------|-----------------------------------------------------------------------------------| -|-
+| Bon        | <img src="https://render.githubusercontent.com/render/math?math=O(n^2 \log n)">   | <img src="https://render.githubusercontent.com/render/math?math=3-2/b(G)"> | bon
+| BFF        | <img src="https://render.githubusercontent.com/render/math?math=O(n^3)">          | <img src="https://render.githubusercontent.com/render/math?math=3-2/b(G)">| bff
+| BFF+       | <img src="https://render.githubusercontent.com/render/math?math=O(n^3)">          | <img src="https://render.githubusercontent.com/render/math?math=3-2/b(G)">| bff+
+| Bonus      | <img src="https://render.githubusercontent.com/render/math?math=O(n^{3%2B p})">   | <img src="https://render.githubusercontent.com/render/math?math=3-2(p %2B 1)/b(G)">| bonus
 
-```
-pip3 install conan
-```
 
-## Reload local path
+## Install c++ boost libraries
 ```
-source ~/.profile
-```
-
-## Compiler configuration for GCC compiler >= 5.1 :
-```
-conan profile new default --detect
-conan profile update settings.compiler.libcxx=libstdc++11 default
+sudo apt install libboost-all-dev
 ```
 
-## Install conan libraries
-```
-mkdir build && cd build
-conan install ..
-```
-
-NOTE: Previous steps only are needed to be executed once. Once conan libraries are installed, to compile and run the program, get back to the root project folder with ```cd ..```
-
-# Install cmake
+## Install cmake
 ```
 sudo apt install cmake
 ```
 
-# Compile program
-
+## Compile program
 ```
 cmake -DCMAKE_BUILD_TYPE=Release .
 cmake --build .
 ```
-The binary file will be generated onto the "bin/" folder. Get onto it with ```cd bin/```
+The binary file will be generated onto the root folder with the name ```bonus_alg```.
 
-# Run
+## Run
 
 ```
-./bin/bonus_alg [file] [algorithm] [p]
+./bonus_alg [file] [algorithm] [p]
 ```
 
-## Where,
+### Where,
 
 |  Parameter |                                          Description                                          |
 |----------|---------------------------------------------------------------------------------------------|
-| `[file]` | (string) Instance file path with a valid format, defined here                                    |
-| `[algorithm]`    | (string) Algorithm to run (bon, bff and bonus)  |
-| `[p]`    | (integer) p value (only if bonus algorithm is selected)   |
+| `[file]` | (string) Instance file path with a valid format.                                    |
+| `[algorithm]`    | (string) Algorithm to execute (**bon**, **bff**, **bff+** and **bonus**)  |
+| `[p]`    | (integer) ***p*** value (only if bonus algorithm is selected)   |
 
-# Example 1
+## Example 1
 ```
 ./bin/bonus_alg dataset/line49nodes.mtx bonus 1
 ```
+
+
+# Contact
+* jesgadiaz@inaoep.mx
+* alexcornejo@inaoep.mx
+
